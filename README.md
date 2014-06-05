@@ -10,11 +10,17 @@ git clone git@github.com:nooblucker/hueCli.git
 cd hueCli
 npm install
 npm link
+
+# search bridges
+hue search
+
+# connect to the first bridge found (press the link button)
+hue connect
 ```
 
 # Usage
 
 ```bash
-# search bridges
-hue search
+# activate test scene
+hue scene test
 ```

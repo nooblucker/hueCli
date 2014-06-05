@@ -28,7 +28,9 @@
     "hue": "bin/hueCli.js"
   },
   "dependencies": {
+    "node-uuid": "^1.4.1",
     "nopt": "^2.2.1",
+    "request": "^2.36.0",
     "xml2js": "^0.4.4"
   }
 }

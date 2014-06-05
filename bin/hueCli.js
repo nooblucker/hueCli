@@ -4,14 +4,10 @@ var path = require("path");
 var hueCli = require('../lib/cli');
 
 var knownOpts = {
-  "scene" : path,
-  "verbose" : Boolean,
-  "on" : Boolean,
-  "off" : Boolean
+  "verbose" : Boolean
 };
 var shortHands = {
-  "v" : ["--verbose"],
-  "s" : ["--scene"]
+  "v" : ["--verbose"]
 };
 var opts = nopt(knownOpts, shortHands, process.argv, 2);
 
