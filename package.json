@@ -1,6 +1,6 @@
 {
-  "name": "hueCli",
-  "version": "0.0.0",
+  "name": "huecli",
+  "version": "0.1.0",
   "description": "Command line interface for philips hue",
   "main": "hueCli.js",
   "scripts": {
