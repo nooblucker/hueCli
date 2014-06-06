@@ -1,7 +1,7 @@
-hueCli
+hueCli (unstable)
 ======
 
-Command line interface for philips hue
+Command line interface for philips hue. this very early version will be refactored a lot.
 
 # Install
 
