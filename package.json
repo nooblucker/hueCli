@@ -28,6 +28,7 @@
     "hue": "bin/hueCli.js"
   },
   "dependencies": {
+    "node-persist": "0.0.2",
     "node-uuid": "^1.4.1",
     "nopt": "^2.2.1",
     "request": "^2.36.0",
