@@ -1,12 +1,24 @@
+var path = require('path');
+var uuid = require('node-uuid');
+
+var hue = require("node-hue-api");
+var HueApi = hue.HueApi;
+
+function getUserName() {
+  return process.env[(process.platform == 'win32') ? 'USERNAME' : 'USER'];
+}
+
+function getUserHome() {
+  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+}
+
 module.exports = function Hue(cb) {
 
-  var uuid = require('node-uuid');
-
-  var hue = require("node-hue-api");
-  var HueApi = hue.HueApi;
 
   var storage = require('node-persist');
-  storage.initSync();
+  storage.initSync({
+    dir: path.join(getUserHome(), '.hueCli')
+  });
 
   var user = storage.getItem('user');
   if (!user) {
@@ -17,10 +29,6 @@ module.exports = function Hue(cb) {
 
   var ip = storage.getItem('ip');
   var result;
-
-  function getUserName() {
-    return process.env[(process.platform == 'win32') ? 'USERNAME' : 'USER'];
-  }
 
   function register(ip, user, cb) {
     console.log('press the link button');
