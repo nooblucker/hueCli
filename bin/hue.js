@@ -67,4 +67,29 @@ operetta.command('notify', 'flashes all lights once', function(command) {
   });
 });
 
+operetta.command('lights', 'set light state', function(command) {
+  command.parameters(['-c','--color'], "hex value or css name");
+  command.start(function(opt) {
+    var csscolors = require('css-color-names');
+
+    function torgb(hex) {
+      var b = parseInt(hex.replace('#', ''),16);
+      return [b>>16, b>>8&255, b&255];
+    }
+
+    var hex = csscolors[opt['-c']];
+    var rgb = torgb(hex);
+
+    var LightState = require('node-hue-api').lightState;
+    var state = LightState.create().on(true).rgb(rgb[0], rgb[1], rgb[2]);
+
+    getHueApi(function(api) {
+      api.setGroupLightState('0', state).then(function(res) {
+        console.dir(res);
+      }).done();
+    });
+
+  });
+});
+
 operetta.start();

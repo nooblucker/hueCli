@@ -28,6 +28,7 @@
     "hue": "bin/hue.js"
   },
   "dependencies": {
+    "css-color-names": "0.0.0",
     "hue-scenes": "0.x",
     "node-hue-api": "0.x",
     "node-persist": "0.x",
