@@ -1,6 +1,6 @@
 {
   "name": "huecli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Command line interface for philips hue",
   "main": "hueCli.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/nooblucker/hueCli",
   "preferGlobal": "true",
   "bin": {
-    "hue": "bin/hueCli.js"
+    "hue": "bin/hue.js"
   },
   "dependencies": {
     "commander": "^2.2.0",
