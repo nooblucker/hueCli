@@ -69,6 +69,7 @@ operetta.command('notify', 'flashes all lights once', function(command) {
 });
 
 operetta.command('lights', 'control single lights', function(command) {
+  command.options(['--off'], 'turn off the lights');
   command.options(['-l', '--list'], 'list all available lights');
   command.options(['-C','--colors'], 'show available color names. but you can use hex values, if you are not happy with them.');
   command.parameters(['-c','--color'], 'hex value or css name');
@@ -96,7 +97,14 @@ operetta.command('lights', 'control single lights', function(command) {
     } else {
       // set state
       var LightState = require('node-hue-api').lightState;
-      var state = LightState.create().on(true);
+      var state = LightState.create();
+
+      if (opt['--off']) {
+        state.off();
+      } else {
+        state.on();
+      }
+
       if (opt['-c']) {
         var toRGB = function(hex) {
           var b = parseInt(hex.replace('#', ''),16);
@@ -113,6 +121,8 @@ operetta.command('lights', 'control single lights', function(command) {
         state.bri = parseInt(opt['-b']);
       }
 
+      console.log(state);
+
       getHueApi(function(api) {
         // no specific lights provided -> apply to all lights
         if (opt.positional.length === 0) {
@@ -120,7 +130,10 @@ operetta.command('lights', 'control single lights', function(command) {
         } else {
           // apply to each provided light
           for (var i = 0; i < opt.positional.length; ++i) {
-            api.setLightState(parseInt(opt.positional[i]), state).then(console.dir).done();
+            var lightId = +opt.positional[i];
+            if (lightId) {
+              api.setLightState(lightId, state).then(console.dir).done();
+            }
           }
         }
       });
