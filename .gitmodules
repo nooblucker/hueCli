@@ -1,0 +1,3 @@
+[submodule "node-operetta"]
+	path = node-operetta
+	url = https://github.com/adamclerk/node-operetta.git

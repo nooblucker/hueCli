@@ -10,7 +10,7 @@ module.exports = function Hue(cb) {
 
   var user = storage.getItem('user');
   if (!user) {
-    user = 'sven';// uuid.v4();
+    user = uuid.v4();
     storage.setItem('user', user);
     console.log('you are now user ' + user);
   }
@@ -18,10 +18,14 @@ module.exports = function Hue(cb) {
   var ip = storage.getItem('ip');
   var result;
 
+  function getUserName() {
+    return process.env[(process.platform == 'win32') ? 'USERNAME' : 'USER'];
+  }
+
   function register(ip, user, cb) {
     console.log('press the link button');
     var api = new HueApi(ip, user);
-    api.registerUser(ip, user, 'hue cli')
+    api.registerUser(ip, user, 'hue cli ' + getUserName())
       .then(function(user) {
         storage.setItem('user', user);
         cb();
@@ -40,6 +44,7 @@ module.exports = function Hue(cb) {
     var api = new HueApi(ip, user);
     api.connect().then(function(res) {
       if (!res.whitelist) {
+        console.dir(res);
         throw new Error('your username (' + user + ') is not registered.');
       }
     }).then(function () {

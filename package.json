@@ -1,6 +1,6 @@
 {
   "name": "huecli",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Command line interface for philips hue",
   "main": "hueCli.js",
   "scripts": {
@@ -28,10 +28,9 @@
     "hue": "bin/hue.js"
   },
   "dependencies": {
-    "commander": "^2.2.0",
-    "hue-scenes": "0.0.0",
-    "node-hue-api": "^0.2.2",
-    "node-persist": "0.0.2",
-    "node-uuid": "^1.4.1"
+    "hue-scenes": "0.x",
+    "node-hue-api": "0.x",
+    "node-persist": "0.x",
+    "node-uuid": "1.x"
   }
 }
