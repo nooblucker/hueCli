@@ -6,6 +6,7 @@ var getHueApi = require('../index');
 operetta = new Operetta();
 
 operetta.command('scene', 'load and save scenes', function(command) {
+  command.banner = 'Load a scene: hue scene myscene\nSave the current state to a scene: hue scene -s fancyscene\nOverwrite an existing scene: hue scene -sf fancyscene';
   command.options(['-s','--save'], "Save the current light settings into a scene with the given name.");
   command.options(['-f','--force'], "Use in combination with --save to overwrite an existing scene with the same name.");
   command.start(function(args) {
@@ -47,12 +48,23 @@ operetta.command('scene', 'load and save scenes', function(command) {
   });
 });
 
-operetta.command('lights', "Commit Changes", function(command) {
-  command.options(['-a','--all'], "Tell the command to automatically stage files that have been modified and deleted, but new files you have not told git about are not affected.");
-  command.parameters(['-m','--message'], "Use the given message as the commit message.", function(value) {
-    console.log("Staging modified files.");
+operetta.command('notify', 'flashes all lights once', function(command) {
+  command.parameters(['-d','--duration'], "After this many seconds the alert effect is canceled. If this argument is not given, the lights flash once.");
+  command.start(function(opt) {
+    getHueApi(function(api) {
+      var alertMode = opt['-d'] ? 'lselect' : 'select';
+      api.setGroupLightState('0', {'alert': alertMode}).then(function(res) {
+        console.log('hue got notified :D');
+        if (opt['-d']) {
+          setTimeout(function() {
+            api.setGroupLightState('0', {'alert': 'none'}).then(function(res) {
+              console.log('stop notifying after ' + opt['-d'] + ' seconds');
+            }).done();
+          }, parseInt(opt['-d'])*1000);
+        }
+      }).done();
+    });
   });
-  command.start();
 });
 
 operetta.start();
