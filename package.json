@@ -28,11 +28,10 @@
     "hue": "bin/hueCli.js"
   },
   "dependencies": {
+    "commander": "^2.2.0",
+    "hue-scenes": "0.0.0",
+    "node-hue-api": "^0.2.2",
     "node-persist": "0.0.2",
-    "node-uuid": "^1.4.1",
-    "nopt": "^2.2.1",
-    "operetta": "0.0.5",
-    "request": "^2.36.0",
-    "xml2js": "^0.4.4"
+    "node-uuid": "^1.4.1"
   }
 }
