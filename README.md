@@ -3,10 +3,6 @@ hueCli (unstable)
 
 Command line interface for philips hue. this very early version will be refactored a lot.
 
-# Issues
-
-the git style subcommand causes problems: https://github.com/visionmedia/commander.js/pull/224
-
 # Install
 
 ## via npm (recommended)
@@ -18,6 +14,13 @@ npm install -g huecli
 # Usage
 
 ```bash
-# activate test scene
+# activate test scenes
+hue scene on
 hue scene colorloop
+hue scene off
+
+# notify command flashes your lights once
+hue notify
+# or for 5 seconds
+hue notify -d 5
 ```
