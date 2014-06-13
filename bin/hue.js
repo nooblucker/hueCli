@@ -3,8 +3,67 @@ var Operetta = require('../node-operetta/operetta').Operetta;
 var scenes = require('hue-scenes');
 var getHueApi = require('../index');
 var csscolors = require('css-color-names');
+var Q = require('q');
+
+function exitErr(message) {
+  console.error(message);
+  process.exit(1);
+}
 
 operetta = new Operetta();
+
+operetta.command('config', 'manages your hue system, access control etc.', function(command) {
+
+  command.command('removeuser', 'deletes user by id or name', function(removeUserCmd) {
+    removeUserCmd.banner = 'Example usage: hue config removeuser asdfg qwerty -n "iPad"\nwill delete user ids asdfg, qwerty and all users whose name contains iPad. if your own username contains iPad, it will not be deleted. to delete your own user, provide the ID explicitly.';
+    removeUserCmd.parameters(['-n', '--name'], 'delete by name');
+    removeUserCmd.start(function(args) {
+
+      getHueApi(function(api) {
+
+        var findMatchingUserIds = function(config) {
+          var userIds = args.positional;
+          if (args['-n']) {
+            var userRegExp = new RegExp(args['-n'], 'i');
+            Object.keys(config.whitelist).forEach(function(userId) {
+              var name = config.whitelist[userId].name;
+              if (userRegExp.test(name)) {
+                if (userId != api.username) {
+                  userIds.push(userId);
+                }
+              }
+            });
+          }
+          return Q.fcall(function () {
+            return userIds;
+          });
+        };
+
+        var removeUserIds = function(userIds) {
+          userIds.forEach(function(id) {
+            api.deleteUser(id).then(function() {
+              console.log('deleted userid ' + id);
+            }).done();
+          });
+        };
+
+        api.config().then(findMatchingUserIds).then(removeUserIds).done();
+      });
+
+    });
+  });
+
+  command.command('show', 'shows the configuration', function(showCmd) {
+    showCmd.start(function(args) {
+      getHueApi(function(api) {
+        api.config().then(console.dir).done();
+      });
+    });
+  });
+
+  command.start();
+
+});
 
 operetta.command('scene', 'load and save scenes', function(command) {
   command.banner = 'Load a scene: hue scene myscene\nSave the current state to a scene: hue scene -s fancyscene\nOverwrite an existing scene: hue scene -sf fancyscene';

@@ -33,7 +33,7 @@ module.exports = function Hue(cb) {
   function register(ip, user, cb) {
     console.log('press the link button');
     var api = new HueApi(ip, user);
-    api.registerUser(ip, user, 'hue cli ' + getUserName())
+    api.registerUser(ip, user, 'hueCli#' + getUserName())
       .then(function(user) {
         storage.setItem('user', user);
         cb();
@@ -48,7 +48,6 @@ module.exports = function Hue(cb) {
   }
 
   function returnApi(ip, user) {
-    console.log(user + '@' + ip);
     var api = new HueApi(ip, user);
     api.connect().then(function(res) {
       if (!res.whitelist) {
